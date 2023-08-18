@@ -1,3 +1,7 @@
+<script setup>
+    defineProps({
+    })
+</script>
 <template>
-    <p>Oke</p>
+    <p>INI HALAMAN INDEX KATEGORI</p>
 </template>

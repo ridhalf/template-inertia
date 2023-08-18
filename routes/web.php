@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,13 +13,31 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::middleware('auth')->group(function (){
+    Route::get('/', function () {
+        return \Inertia\Inertia::render('Categories/Index');
+    });
+    Route::get('/logout',function (){
+        \Illuminate\Support\Facades\Auth::logout();
+        return redirect('/login');
+    });
+    Route::get('/user', function () {
+        return 'oke';
+    });
+    Route::get('/parkir/masuk',[\App\Http\Controllers\ParkirController::class,'masuk']);
+    Route::get('/parkir/keluar',[\App\Http\Controllers\ParkirController::class,'keluar']);
 
-Route::get('/', function () {
-    return \Inertia\Inertia::render('Categories/Index');
+    Route::get('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'index']);
+
 });
-Route::get('/login',function (){
-    return \Inertia\Inertia::render('Auth/Login');
+Route::middleware('guest')->group(function (){
+    Route::get('/login',function (){
+        return \Inertia\Inertia::render('Auth/Login');
+    })->name('login');
+    Route::post('/login',[AuthController::class,'login']);
+    Route::get('/register',function (){
+        return \Inertia\Inertia::render('Auth/Register');
+    });
 });
-Route::get('/register',function (){
-    return \Inertia\Inertia::render('Auth/Register');
-});
+
+
