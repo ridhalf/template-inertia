@@ -14,12 +14,10 @@ use App\Http\Controllers\AuthController;
 |
 */
 Route::middleware('auth')->group(function (){
-    Route::get('/', function () {
-        return \Inertia\Inertia::render('Categories/Index');
-    });
+    Route::get('/',[\App\Http\Controllers\ParkirController::class,'masuk']);
     Route::get('/logout',function (){
         \Illuminate\Support\Facades\Auth::logout();
-        return redirect('/login');
+        return redirect()->route('login');
     });
     Route::get('/user', function () {
         return 'oke';
@@ -27,8 +25,9 @@ Route::middleware('auth')->group(function (){
     Route::get('/parkir/masuk',[\App\Http\Controllers\ParkirController::class,'masuk']);
     Route::get('/parkir/keluar',[\App\Http\Controllers\ParkirController::class,'keluar']);
 
-    Route::get('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'index']);
-
+    Route::get('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'index'])->name('kategori.index');
+    Route::post('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'store']);
+    Route::delete('/master/kategori/{id}',[\App\Http\Controllers\CategoriesController::class,'destroy']);
 });
 Route::middleware('guest')->group(function (){
     Route::get('/login',function (){

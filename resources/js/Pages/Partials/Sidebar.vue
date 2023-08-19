@@ -1,3 +1,6 @@
+<script setup>
+
+</script>
 <template>
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -47,5 +50,4 @@
         </li>
     </ul>
 </template>
-<script setup>
-</script>
+
