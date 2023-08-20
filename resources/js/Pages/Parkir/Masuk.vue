@@ -4,7 +4,6 @@ import DataTablesCore from 'datatables.net';
 import 'datatables.net-responsive';
 import {router, useForm} from "@inertiajs/vue3";
 import Swal from "sweetalert2";
-import {onMounted} from "vue";
 DataTable.use(DataTablesCore);
 
 defineProps({
@@ -47,7 +46,7 @@ function saveParkir()
         <div class="card-header py-3">
             <div class="row mb-2">
                 <div class="col">
-                    <h5 class="m-0 font-weight-bold text-primary" data-toggle="collapse" href="#collapse-checkin" role="button" aria-expanded="false" aria-controls="collapse-checkin">Tambah</h5>
+                    <h5 class="btn btn-outline-primary font-weight-bold" data-toggle="collapse" href="#collapse-checkin" role="button" aria-expanded="false" aria-controls="collapse-checkin">Tambah</h5>
                 </div>
             </div>
         </div>
@@ -99,7 +98,7 @@ function saveParkir()
                         <th scope="col">Kode Parkir</th>
                         <th scope="col">No Polisi</th>
                         <th scope="col">Jam Masuk</th>
-                        <th scope="col">Aksi</th>
+                        <th scope="col">Kategori</th>
                     </tr>
                     </thead>
                     <tfoot>
@@ -108,7 +107,7 @@ function saveParkir()
                         <th scope="col">Kode Parkir</th>
                         <th scope="col">No Polisi</th>
                         <th scope="col">Jam Masuk</th>
-                        <th scope="col">Aksi</th>
+                        <th scope="col">Kategori</th>
                     </tr>
                     </tfoot>
                     <tbody>
@@ -117,9 +116,7 @@ function saveParkir()
                         <td>{{data.parking_code}}</td>
                         <td>{{data.no_police}}</td>
                         <td>{{data.check_in}}</td>
-                        <td>
-                            <a href="#" class="btn btn-primary">Aksi</a>
-                        </td>
+                        <td>{{data.category_name}}</td>
                     </tr>
                     </tbody>
                 </DataTable>

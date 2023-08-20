@@ -14,14 +14,24 @@ class ParkirController extends Controller
 {
     public function masuk(){
         $categories = Category::select('id','name')->get();
-        $parkir = Parking::all();
+        $parkir = Parking::select('parkings.id','check_in','parking_code'
+            ,'no_police','date_in','categories.name as category_name')
+            ->join('categories','categories.id','=','parkings.category_id')
+            ->where('status','IN')
+            ->orderBy('parkings.created_at','DESC')->get();
         return Inertia::render('Parkir/Masuk',[
             'parkir' => $parkir,
             'categories' => $categories
         ]);
     }
     public function keluar(){
-        return Inertia::render('Parkir/Keluar');
+        $parkir = Parking::select('parkings.*','categories.name as category_name')
+            ->join('categories','categories.id','=','parkings.category_id')
+            ->where('status', 'OUT')
+            ->orderBy('parkings.updated_at', 'DESC')->get();
+        return Inertia::render('Parkir/Keluar',[
+            'parkir'=>$parkir
+        ]);
     }
     public function check_in(Request $request)
     {
@@ -49,6 +59,34 @@ class ParkirController extends Controller
         }catch (QueryException $e){
             Log::error($e);
             return redirect()->route('parkir.checkin')->with('error',$e);
+        }
+    }
+    public function check_out(Request $request)
+    {
+        $request->validate([
+            'parking_code' => 'required|numeric'
+        ],[
+            'parking_code.required'=> 'kode parkir harus diisi',
+            'parking_code.numeric'=> 'kode parkir harus berupa angka',
+        ]);
+        $parking = Parking::where('parking_code', 'PKR-' . trim($request->parking_code))
+            ->where('status', 'IN')
+            ->first();
+        if ($parking == null) {
+            return redirect()->back()->withErrors(['parking_code'=>'kode parkir salah atau tidak ditemukan']);
+        }
+        $jam =   floor((strtotime(date('Y-m-d H:i:s')) - strtotime($parking->created_at)) / (60 * 60)) +1;
+        $parking->date_out = date('Y-m-d');
+        $parking->check_out = date('H:i:s');
+        $parking->status = 'OUT';
+        $parking->duration = $jam;
+        $parking->total_payment = $parking->category->charge + $jam * 2000;
+        try {
+            $parking->save();
+            return redirect()->route('parkir.checkout')->with('success','kendaraan berhasil keluar');
+        }catch (QueryException $e){
+            Log::error($e);
+            return redirect()->route('parkir.checkout')->with('error',$e);
         }
     }
 }

@@ -23,10 +23,11 @@ Route::middleware('auth')->group(function (){
         return 'oke';
     });
     Route::get('/parkir/masuk',[\App\Http\Controllers\ParkirController::class,'masuk'])->name('parkir.checkin');
-    Route::get('/parkir/keluar',[\App\Http\Controllers\ParkirController::class,'keluar']);
+    Route::get('/parkir/keluar',[\App\Http\Controllers\ParkirController::class,'keluar'])->name('parkir.checkout');
     Route::post('/parkir/check_in',[\App\Http\Controllers\ParkirController::class,'check_in']);
+    Route::post('/parkir/check_out',[\App\Http\Controllers\ParkirController::class,'check_out']);
 
-    Route::get('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'index']);
+    Route::get('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'index'])->name('kategori.index');
     Route::post('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'store']);
     Route::delete('/master/kategori/{id}',[\App\Http\Controllers\CategoriesController::class,'destroy']);
 });
