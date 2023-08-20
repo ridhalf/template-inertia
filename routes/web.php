@@ -22,10 +22,11 @@ Route::middleware('auth')->group(function (){
     Route::get('/user', function () {
         return 'oke';
     });
-    Route::get('/parkir/masuk',[\App\Http\Controllers\ParkirController::class,'masuk']);
+    Route::get('/parkir/masuk',[\App\Http\Controllers\ParkirController::class,'masuk'])->name('parkir.checkin');
     Route::get('/parkir/keluar',[\App\Http\Controllers\ParkirController::class,'keluar']);
+    Route::post('/parkir/check_in',[\App\Http\Controllers\ParkirController::class,'check_in']);
 
-    Route::get('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'index'])->name('kategori.index');
+    Route::get('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'index']);
     Route::post('/master/kategori',[\App\Http\Controllers\CategoriesController::class,'store']);
     Route::delete('/master/kategori/{id}',[\App\Http\Controllers\CategoriesController::class,'destroy']);
 });
